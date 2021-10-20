@@ -1,0 +1,17 @@
+
+
+
+get the add to playlist working
+
+the play a single song dfixed
+
+
+
+try fadeable view (done)
+
+install expo-sqlite
+
+top navigation menu react navigation
+
+
+find a skeleton ui package
