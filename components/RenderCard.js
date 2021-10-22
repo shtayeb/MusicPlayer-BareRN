@@ -1,16 +1,19 @@
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { AppContext } from "../constants/AppContext";
 import { COLORS, SIZES } from "../constants/theme";
 import { Menu, MenuItem, MenuDivider } from "react-native-material-menu";
+import { useNavigation } from "@react-navigation/core";
+
 const RenderCard = ({ item, play }) => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   if (!item.fileName) {
     return <View style={{ height: 250, marginBottom: 120 }}></View>;
   }
-  const { playing } = React.useContext(AppContext);
+  // const { addSongToPlaylist } = useContext(AppContext);
+  const navigation = useNavigation();
 
   let Songtitle = "No Title";
   if (item.title) {
@@ -40,12 +43,19 @@ const RenderCard = ({ item, play }) => {
           // marginBottom: 10,
         }}
       >
-        <MenuItem onPress={() => setVisible(false)}>Menu item 1</MenuItem>
-        <MenuItem onPress={() => setVisible(false)}>Menu item 2</MenuItem>
-        <MenuItem disabled>Disabled item</MenuItem>
+        <MenuItem onPress={() => setVisible(false)}>
+          <Text style={{ fontFamily: "Poppins-Regular" }}>Play</Text>
+        </MenuItem>
         <MenuDivider />
-        <MenuItem onPress={() => setVisible(false)}>Menu item 4</MenuItem>
-        <MenuItem onPress={() => setVisible(false)}>Menu item 5</MenuItem>
+        <MenuItem
+          onPress={() => {
+            setVisible(false);
+            // handlePresentModalPress();
+            navigation.navigate("AddPlaylists", { item });
+          }}
+        >
+          <Text style={{ fontFamily: "Poppins-Regular" }}>Add to Playlist</Text>
+        </MenuItem>
       </Menu>
 
       <View
@@ -59,7 +69,7 @@ const RenderCard = ({ item, play }) => {
             borderRadius: 20,
           },
           tw`pr-5 pl-5`,
-          playing.id == item.id && styles.playing,
+          // playing.id == item.id && styles.playing,
         ]}
       >
         {/* icon */}
@@ -117,7 +127,11 @@ const RenderCard = ({ item, play }) => {
           </View>
         </TouchableOpacity>
         {/* the end */}
-        <TouchableOpacity onPress={() => setVisible(true)}>
+        <TouchableOpacity
+          onPress={() => {
+            setVisible(true);
+          }}
+        >
           <Entypo name="dots-three-horizontal" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>

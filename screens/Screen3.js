@@ -15,58 +15,44 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 import RenderCard from "../components/RenderCard";
+import { AppContext } from "../constants/AppContext";
 import { COLORS, SIZES } from "../constants/theme";
 
-const Songs = [
-  {
-    id: "1",
-    name: "Good Music",
-    image: require("../assets/images/4.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "2",
-    name: "New Music",
-    image: require("../assets/images/2.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "3",
-    name: "Good Music",
-    image: require("../assets/images/6.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "4",
-    name: "Good Music",
-    image: require("../assets/images/1.jpg"),
-    sub: "Imagine Dragons",
-  },
-
-  { id: "222" },
-];
+import TrackPlyer from "react-native-track-player";
 
 const Screen3 = (props) => {
   const navigation = useNavigation();
 
   const playlist = props.route.params.item;
 
+  // const { likedSongs } = useContext(AppContext);
+
+  // useEffect(() => {
+
+  // }, [likedSongs]);
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: COLORS.black, flex: 1 }}>
       {/* back button */}
       <StatusBar
         translucent={true}
-        style="dark"
+        style="light"
         backgroundColor="transparent"
       />
       {/* the list */}
       <FlatList
-        data={Songs}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={() => {
+        data={[...playlist.songs, { url: "asdfasd" }]}
+        keyExtractor={(item) => `${item.url}`}
+        ListHeaderComponent={({ item }) => {
           return (
             <ImageBackground
-              source={playlist.image}
+              source={
+                !playlist.songs[0]
+                  ? require("../assets/images/2.jpg")
+                  : playlist.songs[0].cover
+                  ? { uri: playlist.songs[0].cover }
+                  : require("../assets/images/2.jpg")
+              }
               style={[
                 {
                   marginVertical: 5,
@@ -82,7 +68,7 @@ const Screen3 = (props) => {
                 <Ionicons
                   name="arrow-back"
                   size={30}
-                  color="white"
+                  color={COLORS.white}
                   style={[tw`pl-5 pt-5`]}
                 />
               </TouchableOpacity>
@@ -90,8 +76,8 @@ const Screen3 = (props) => {
                 <View>
                   <Text
                     style={[
-                      tw`text-white text-lg`,
-                      { fontFamily: "Poppins-Medium" },
+                      tw`text-lg`,
+                      { color: COLORS.white, fontFamily: "Poppins-Medium" },
                     ]}
                   >
                     Hello this is the song
@@ -117,6 +103,7 @@ const Screen3 = (props) => {
                       3 hr 36 min 50 Songs
                     </Text>
                     <TouchableOpacity
+                      onPress={() => TrackPlyer.add(playlist.songs)}
                       style={[
                         {
                           backgroundColor: COLORS.orange,

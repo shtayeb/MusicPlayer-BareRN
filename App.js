@@ -11,6 +11,7 @@ import Screen3 from "./screens/Screen3";
 
 import { AppProvider } from "./constants/AppContext";
 import Player from "./components/Player";
+import AddPlaylists from "./screens/AddPlaylists";
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ export default function App() {
             <Stack.Screen name="Screen1" component={Screen1} />
             <Stack.Screen name="Screen2" component={Screen2} />
             <Stack.Screen name="Screen3" component={Screen3} />
+            <Stack.Screen name="AddPlaylists" component={AddPlaylists} />
           </Stack.Navigator>
         </SafeAreaProvider>
       </NavigationContainer>

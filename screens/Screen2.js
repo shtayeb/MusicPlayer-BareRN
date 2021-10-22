@@ -1,4 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, {
+  // useContext,
+  useState,
+} from "react";
 import {
   StyleSheet,
   Text,
@@ -42,7 +45,7 @@ const Screen2 = () => {
     })
       .then((tracks) => {
         // do your stuff...
-        // console.log(tracks);
+        console.log(tracks[0]);
         setSongs([...tracks, { duration: "233" }]);
         // console.log("1");
       })

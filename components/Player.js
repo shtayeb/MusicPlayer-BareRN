@@ -436,10 +436,10 @@ const Player = () => {
       handleIndicatorStyle={{ color: "red", borderColor: "red" }}
     >
       <BottomSheetView style={{ flex: 1 }}>
-        <ExpandableView show={isLow}>{renderPlayControls()}</ExpandableView>
+        {/* <ExpandableView show={isLow}>{renderPlayControls()}</ExpandableView> */}
         <ExpandableView show={isFull}>{renderFullPlayer()}</ExpandableView>
         <ExpandableView show={isMedium}>{renderMediumPlayer()}</ExpandableView>
-        {/* {isLow && renderPlayControls()} */}
+        {isLow && renderPlayControls()}
         {/* {isFull && renderFullPlayer()} */}
       </BottomSheetView>
     </BottomSheet>

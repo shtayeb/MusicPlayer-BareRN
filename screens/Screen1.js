@@ -18,38 +18,11 @@ import { COLORS, FONTS, SIZES } from "../constants/theme";
 import tw from "tailwind-react-native-classnames";
 import { StatusBar } from "expo-status-bar";
 import { AppContext } from "../constants/AppContext";
-
-const Playlists = [
-  { id: "11" },
-  {
-    id: "1",
-    name: "Good Music",
-    image: require("../assets/images/4.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "2",
-    name: "New Music",
-    image: require("../assets/images/2.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "3",
-    name: "Good Music",
-    image: require("../assets/images/6.jpg"),
-    sub: "Imagine Dragons",
-  },
-  {
-    id: "4",
-    name: "Good Music",
-    image: require("../assets/images/1.jpg"),
-    sub: "Imagine Dragons",
-  },
-];
+import TrackPlyer from "react-native-track-player";
 
 const Screen1 = () => {
   const navigation = useNavigation();
-  const { playing } = React.useContext(AppContext);
+  const { playListSongs } = React.useContext(AppContext);
   return (
     <ScrollView style={{ backgroundColor: COLORS.black }}>
       <SafeAreaView>
@@ -139,35 +112,42 @@ const Screen1 = () => {
 
         {/* the playlists */}
         <FlatList
-          data={Playlists}
-          keyExtractor={(item) => item.id}
+          data={[{ id: "Test" }, ...playListSongs]}
+          keyExtractor={(item) => `${item.id}`}
           horizontal
           contentContainerStyle={[tw`mt-5`]}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
-            if (!item.image) {
+            if (!item.title) {
               return <View style={tw`pr-5`}></View>;
             }
 
             return (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Screen3", { item })}
+              <View
+                style={[
+                  tw`mr-5 pb-4`,
+                  {
+                    width: SIZES.width * 0.75,
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                    // justifyContent: "center",
+                    borderRadius: 13,
+                    // alignItems: "center",
+                  },
+                ]}
               >
-                <View
-                  style={[
-                    tw`mr-5 pb-4`,
-                    {
-                      width: SIZES.width * 0.75,
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                      // justifyContent: "center",
-                      borderRadius: 13,
-                      // alignItems: "center",
-                    },
-                  ]}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Screen3", { item })}
                 >
                   <View>
                     <Image
-                      source={item.image}
+                      // source={{ uri: item.songs[0].cover }}
+                      source={
+                        !item.songs[0]
+                          ? require("../assets/images/2.jpg")
+                          : item.songs[0].cover
+                          ? { uri: item.songs[0].cover }
+                          : require("../assets/images/2.jpg")
+                      }
                       style={{
                         width: SIZES.width * 0.75,
                         height: 180,
@@ -176,24 +156,26 @@ const Screen1 = () => {
                       }}
                     />
                   </View>
-                  <View
-                    style={tw`flex-row justify-between items-center pl-5 pr-5 pt-3`}
-                  >
-                    <View>
-                      <Text
-                        style={{
-                          color: COLORS.white,
-                          fontWeight: "bold",
-                          fontFamily: "Poppins-Bold",
-                          fontSize: 18,
-                        }}
-                      >
-                        {item.name}
-                      </Text>
-                      <Text style={{ color: COLORS.darkgray, fontSize: 13 }}>
-                        {item.sub}
-                      </Text>
-                    </View>
+                </TouchableOpacity>
+                <View
+                  style={tw`flex-row justify-between items-center pl-5 pr-5 pt-3`}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        color: COLORS.white,
+                        fontWeight: "bold",
+                        fontFamily: "Poppins-Bold",
+                        fontSize: 18,
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+                    <Text style={{ color: COLORS.darkgray, fontSize: 13 }}>
+                      {item.songs[0] ? item.songs[0].title : "No Sub"}
+                    </Text>
+                  </View>
+                  <TouchableOpacity onPress={() => TrackPlyer.add(item.songs)}>
                     <View
                       style={[
                         { backgroundColor: COLORS.orange, borderRadius: 50 },
@@ -202,9 +184,9 @@ const Screen1 = () => {
                     >
                       <Ionicons name="play" size={25} color={COLORS.white} />
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
+              </View>
             );
           }}
         />
